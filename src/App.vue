@@ -1,8 +1,7 @@
 <template>
   <div id="app">
     <Header />
-    <AddTodo v-on:add-todo="addTodo"/>
-    <Todos v-bind:todos="todos" v-on:del-todo="deleteTodo"/> 
+    <router-view/>
   </div>
 </template>
 
@@ -27,7 +26,9 @@ export default {
   },
   methods: {
     deleteTodo(id) {
-      this.todos = this.todos.filter(todo => todo.id !== id);
+      axios.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
+      .then(res => this.todos = this.todos.filter(todo => todo.id !== id))
+      .catch(err => console.log(err));
     },
     addTodo(newTodo) {
       const {title, completed} = newTodo;
